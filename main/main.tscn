@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://0ch87bw1ryfo"]
+
+[ext_resource type="PackedScene" uid="uid://tqq3losf3fpp" path="res://game_object/player/player.tscn" id="1_xs2aj"]
+[ext_resource type="PackedScene" uid="uid://bfhmks6j3wap8" path="res://game_object/spawner/spawner.tscn" id="2_nkrp2"]
+[ext_resource type="PackedScene" uid="uid://cuxj1181v8f7g" path="res://game_object/knight/knight.tscn" id="2_o5yss"]
+[ext_resource type="PackedScene" uid="uid://cajs6u2jp78rx" path="res://ui/hearts_container/hearts_container.tscn" id="4_lgube"]
+[ext_resource type="PackedScene" uid="uid://cuenttrqn18eq" path="res://managers/health_manager/health_manager.tscn" id="5_cb8dc"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_xs2aj")]
+position = Vector2(362, 247)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(-4, 0)
+zoom = Vector2(10.35, 10.35)
+
+[node name="Spawner" parent="." instance=ExtResource("2_nkrp2")]
+entity = ExtResource("2_o5yss")
+spawn_radius = 500.0
+time_to_spawn = 2.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HeartsContainer" parent="CanvasLayer" instance=ExtResource("4_lgube")]
+
+[node name="HealthManager" parent="." node_paths=PackedStringArray("hearts_container") instance=ExtResource("5_cb8dc")]
+hearts_container = NodePath("../CanvasLayer/HeartsContainer")

@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://tg4lv3u27yik"]
+
+[ext_resource type="Script" path="res://game_object/dummy/dummy.gd" id="1_6d6rq"]
+[ext_resource type="PackedScene" uid="uid://befftq1mtpri5" path="res://component/hurtbox_comp/hurtbox_comp.tscn" id="1_twqmq"]
+[ext_resource type="PackedScene" uid="uid://pnyqhv4soflw" path="res://component/health_comp/health_comp.tscn" id="2_1faxj"]
+[ext_resource type="PackedScene" uid="uid://c7xgwiq4vr6et" path="res://component/knockback_comp/knockback_comp.tscn" id="3_uc5oi"]
+[ext_resource type="Texture2D" uid="uid://kru6e66wwctr" path="res://icon.svg" id="4_e4nih"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4xp0i"]
+radius = 31.0483
+
+[node name="Dummy" type="CharacterBody2D"]
+script = ExtResource("1_6d6rq")
+
+[node name="HurtboxComp" parent="." node_paths=PackedStringArray("health_comp", "knockback_comp") instance=ExtResource("1_twqmq")]
+collision_layer = 2
+health_comp = NodePath("../HealthComp")
+knockback_comp = NodePath("../KnockbackComp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComp"]
+shape = SubResource("CircleShape2D_4xp0i")
+
+[node name="HealthComp" parent="." instance=ExtResource("2_1faxj")]
+max_health = 5
+
+[node name="KnockbackComp" parent="." node_paths=PackedStringArray("body") instance=ExtResource("3_uc5oi")]
+body = NodePath("..")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.992157, 0.258824, 0, 1)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_e4nih")

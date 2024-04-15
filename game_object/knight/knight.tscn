@@ -1,0 +1,79 @@
+[gd_scene load_steps=12 format=3 uid="uid://cuxj1181v8f7g"]
+
+[ext_resource type="Script" path="res://game_object/knight/knight.gd" id="1_sw80d"]
+[ext_resource type="Texture2D" uid="uid://t0nyx56xq67i" path="res://game_object/knight/sword.png" id="7_a6gv0"]
+[ext_resource type="Texture2D" uid="uid://c7vjmietccu7j" path="res://game_object/knight/knight.png" id="7_l7p0h"]
+[ext_resource type="PackedScene" uid="uid://ciwo8f3jhug6k" path="res://component/hitbox_comp/hitbox_comp.tscn" id="8_b8ch1"]
+[ext_resource type="PackedScene" uid="uid://dmnae710xqkon" path="res://component/speed_comp/speed_comp.tscn" id="12_je678"]
+[ext_resource type="PackedScene" uid="uid://pnyqhv4soflw" path="res://component/health_comp/health_comp.tscn" id="13_6pjs4"]
+[ext_resource type="PackedScene" uid="uid://befftq1mtpri5" path="res://component/hurtbox_comp/hurtbox_comp.tscn" id="14_atfw3"]
+[ext_resource type="PackedScene" uid="uid://c7xgwiq4vr6et" path="res://component/knockback_comp/knockback_comp.tscn" id="16_loakp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_22lbw"]
+radius = 6.08276
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8tjfg"]
+radius = 8.0
+height = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dbvmw"]
+radius = 7.0
+
+[node name="Knight" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 48
+motion_mode = 1
+script = ExtResource("1_sw80d")
+speed_reset = 25.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_22lbw")
+
+[node name="SpeedComp" parent="." instance=ExtResource("12_je678")]
+current_speed = 55.0
+target_speed = 55.0
+acceleration_factor = 10.0
+
+[node name="HealthComp" parent="." instance=ExtResource("13_6pjs4")]
+max_health = 2
+
+[node name="HurtboxComp" parent="." node_paths=PackedStringArray("health_comp", "knockback_comp") instance=ExtResource("14_atfw3")]
+visible = false
+collision_layer = 2
+health_comp = NodePath("../HealthComp")
+knockback_comp = NodePath("../KnockbackComp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComp"]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_8tjfg")
+
+[node name="KnockbackComp" parent="." node_paths=PackedStringArray("body") instance=ExtResource("16_loakp")]
+body = NodePath("..")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.576471)
+texture = ExtResource("7_l7p0h")
+
+[node name="SwordSprite" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(0, -1.19209e-07)
+rotation = 0.383972
+texture = ExtResource("7_a6gv0")
+centered = false
+offset = Vector2(3.87, -10.295)
+
+[node name="HitboxComp" parent="." instance=ExtResource("8_b8ch1")]
+visible = false
+position = Vector2(0, -1)
+collision_mask = 8
+damage = 1.0
+applies_knockback = true
+knockback_force = 50.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComp"]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_dbvmw")
+
+[node name="StopTimer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true

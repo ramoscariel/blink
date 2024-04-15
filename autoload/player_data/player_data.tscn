@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2dcwhjksm5s4"]
+
+[ext_resource type="Script" path="res://autoload/player_data/player_data.gd" id="1_d7uoo"]
+
+[node name="PlayerData" type="Node"]
+script = ExtResource("1_d7uoo")
+max_health = 3

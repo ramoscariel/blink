@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://cajs6u2jp78rx"]
+
+[ext_resource type="Script" path="res://ui/hearts_container/hearts_container.gd" id="1_o0kon"]
+
+[node name="HeartsContainer" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 0
+script = ExtResource("1_o0kon")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = -2
+theme_override_constants/v_separation = -19
+columns = 4

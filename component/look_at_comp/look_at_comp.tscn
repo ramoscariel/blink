@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://btcrms2f0b0ws"]
+
+[ext_resource type="Script" path="res://component/look_at_comp/look_at_comp.gd" id="1_7ng6t"]
+
+[node name="LookAtComp" type="Node"]
+script = ExtResource("1_7ng6t")
