@@ -22,9 +22,10 @@ func _ready():
 	health_comp = get_node("HealthComp") as HealthComp
 	speed_comp = get_node("SpeedComp")
 	player = get_tree().get_first_node_in_group("player") as Player
+	if !player:
+		return
 	player.teleported.connect(on_teleported)
 	health_comp.died.connect(destroy)
-	knockback_comp.knockback_finished.connect(on_knockback_finished)
 	#print(health_comp.current_health)
 func _process(_delta):
 	hitbox_comp.emitter_position = global_position

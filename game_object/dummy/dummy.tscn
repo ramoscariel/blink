@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://tg4lv3u27yik"]
+[gd_scene load_steps=8 format=3 uid="uid://tg4lv3u27yik"]
 
 [ext_resource type="Script" path="res://game_object/dummy/dummy.gd" id="1_6d6rq"]
 [ext_resource type="PackedScene" uid="uid://befftq1mtpri5" path="res://component/hurtbox_comp/hurtbox_comp.tscn" id="1_twqmq"]
@@ -9,6 +9,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_4xp0i"]
 radius = 31.0483
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lt5og"]
+size = Vector2(54, 52)
+
 [node name="Dummy" type="CharacterBody2D"]
 script = ExtResource("1_6d6rq")
 
@@ -18,6 +21,7 @@ health_comp = NodePath("../HealthComp")
 knockback_comp = NodePath("../KnockbackComp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComp"]
+visible = false
 shape = SubResource("CircleShape2D_4xp0i")
 
 [node name="HealthComp" parent="." instance=ExtResource("2_1faxj")]
@@ -30,3 +34,9 @@ body = NodePath("..")
 modulate = Color(0.992157, 0.258824, 0, 1)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("4_e4nih")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_lt5og")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+collision_mask = 2

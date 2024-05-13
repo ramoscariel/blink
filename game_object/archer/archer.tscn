@@ -1,0 +1,166 @@
+[gd_scene load_steps=18 format=3 uid="uid://dbbvqn0tgd5d3"]
+
+[ext_resource type="PackedScene" uid="uid://ciwo8f3jhug6k" path="res://component/hitbox_comp/hitbox_comp.tscn" id="1_arp17"]
+[ext_resource type="Texture2D" uid="uid://c8clvfha112lb" path="res://game_object/archer/archer_sheet.png" id="1_k4eys"]
+[ext_resource type="Material" uid="uid://b2wxm5qhu2ke8" path="res://shaders/hit_flash/hit_flash.tres" id="1_o56mt"]
+[ext_resource type="PackedScene" uid="uid://befftq1mtpri5" path="res://component/hurtbox_comp/hurtbox_comp.tscn" id="2_s882o"]
+[ext_resource type="PackedScene" uid="uid://c7xgwiq4vr6et" path="res://component/knockback_comp/knockback_comp.tscn" id="3_ucxxt"]
+[ext_resource type="PackedScene" uid="uid://db8g8w2hgqo4a" path="res://state_machine/state_machine.tscn" id="4_0bent"]
+[ext_resource type="PackedScene" uid="uid://pnyqhv4soflw" path="res://component/health_comp/health_comp.tscn" id="5_70is4"]
+[ext_resource type="Script" path="res://game_object/archer/archer_follow_player.gd" id="7_0qeh3"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ebbqa"]
+radius = 2.0
+height = 14.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qntse"]
+radius = 3.0
+height = 16.0
+
+[sub_resource type="Animation" id="Animation_o1n6o"]
+resource_name = "attack"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_d6al2"]
+resource_name = "walk"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3dsm2"]
+_data = {
+"attack": SubResource("Animation_o1n6o"),
+"walk": SubResource("Animation_d6al2")
+}
+
+[sub_resource type="Animation" id="Animation_dlwvf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/flash_opacity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_b2eiq"]
+resource_name = "hit_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/flash_opacity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4yjhl"]
+_data = {
+"RESET": SubResource("Animation_dlwvf"),
+"hit_flash": SubResource("Animation_b2eiq")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0i3id"]
+radius = 3.0
+height = 16.0
+
+[node name="Archer" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 80
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("1_o56mt")
+position = Vector2(1, 0)
+texture = ExtResource("1_k4eys")
+hframes = 6
+frame = 2
+
+[node name="HitboxComp" parent="." instance=ExtResource("1_arp17")]
+collision_layer = 1
+collision_mask = 8
+damage = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComp"]
+shape = SubResource("CapsuleShape2D_ebbqa")
+
+[node name="HurtboxComp" parent="." node_paths=PackedStringArray("health_comp", "knockback_comp") instance=ExtResource("2_s882o")]
+collision_layer = 2
+health_comp = NodePath("../HealthComp")
+knockback_comp = NodePath("../KnockbackComp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComp"]
+shape = SubResource("CapsuleShape2D_qntse")
+
+[node name="KnockbackComp" parent="." node_paths=PackedStringArray("body") instance=ExtResource("3_ucxxt")]
+body = NodePath("..")
+
+[node name="StateMachine" parent="." node_paths=PackedStringArray("current_state") instance=ExtResource("4_0bent")]
+current_state = NodePath("ArcherFollowPlayer")
+
+[node name="ArcherFollowPlayer" type="Node" parent="StateMachine" node_paths=PackedStringArray("hit_flash_anim_player", "sprite", "character_body", "last_breath_timer", "knockback_comp", "hurtbox_comp", "health_comp")]
+script = ExtResource("7_0qeh3")
+prox_thres = 10.0
+move_speed = 10.0
+hit_flash_anim_player = NodePath("../../HitFlashAnimPlayer")
+sprite = NodePath("../../Sprite2D")
+character_body = NodePath("../..")
+last_breath_timer = NodePath("../../LastBreathTimer")
+knockback_comp = NodePath("../../KnockbackComp")
+hurtbox_comp = NodePath("../../HurtboxComp")
+health_comp = NodePath("../../HealthComp")
+
+[node name="ArcherAttackPlayer" type="Node" parent="StateMachine"]
+
+[node name="HealthComp" parent="." instance=ExtResource("5_70is4")]
+max_health = 3.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_3dsm2")
+}
+autoplay = "walk"
+
+[node name="HitFlashAnimPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4yjhl")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_0i3id")
+
+[node name="LastBreathTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true

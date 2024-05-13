@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://vl3km8sqmduk"]
+
+[ext_resource type="Script" path="res://component/flock_agent/flock_agent.gd" id="1_iwwqj"]
+
+[node name="FlockAgent" type="Node"]
+script = ExtResource("1_iwwqj")

@@ -1,0 +1,73 @@
+[gd_scene load_steps=7 format=3 uid="uid://ccm0cbwi1sxek"]
+
+[ext_resource type="Shader" path="res://shaders/teleport/teleport.gdshader" id="1_pdk5n"]
+[ext_resource type="Texture2D" uid="uid://ddhe5ambppd72" path="res://game_object/player/merlin_sheet.png" id="2_ocrwo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vskj4"]
+shader = ExtResource("1_pdk5n")
+shader_parameter/progress = 0.0
+shader_parameter/noise_desnity = 60.0
+shader_parameter/beam_size = null
+shader_parameter/color = Color(0, 1.02, 1.2, 1)
+
+[sub_resource type="Animation" id="Animation_5g7xe"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_gxd4k"]
+resource_name = "vanish"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 0.965936),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2pfxd"]
+_data = {
+"RESET": SubResource("Animation_5g7xe"),
+"vanish": SubResource("Animation_gxd4k")
+}
+
+[node name="WizardVanish" type="Sprite2D"]
+material = SubResource("ShaderMaterial_vskj4")
+texture = ExtResource("2_ocrwo")
+hframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2pfxd")
+}
+autoplay = "vanish"

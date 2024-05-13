@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmm4n6hryvp2n"]
+
+[ext_resource type="PackedScene" uid="uid://tqq3losf3fpp" path="res://scenes/player.tscn" id="1_067mc"]
+[ext_resource type="PackedScene" uid="uid://dbbvqn0tgd5d3" path="res://game_object/archer/archer.tscn" id="2_381hy"]
+
+[node name="SandBox" type="Node2D"]
+
+[node name="Archer" parent="." instance=ExtResource("2_381hy")]
+position = Vector2(233, 105)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(173, 111)
+zoom = Vector2(3.53, 3.53)
+
+[node name="Player" parent="." instance=ExtResource("1_067mc")]
+position = Vector2(120, 97)

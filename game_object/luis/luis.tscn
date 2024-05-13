@@ -1,13 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://dlgfv4qugek62"]
+[gd_scene load_steps=4 format=3 uid="uid://dlgfv4qugek62"]
 
 [ext_resource type="Script" path="res://game_object/luis/luis.gd" id="1_d8vde"]
 [ext_resource type="Texture2D" uid="uid://kru6e66wwctr" path="res://icon.svg" id="1_le6fj"]
-[ext_resource type="PackedScene" uid="uid://ciwo8f3jhug6k" path="res://component/hitbox_comp/hitbox_comp.tscn" id="2_kh308"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_63fu2"]
-radius = 38.0132
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fyrci"]
+size = Vector2(50, 46)
 
-[node name="Luis" type="CharacterBody2D"]
+[node name="Luis" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_d8vde")
 speed = 300.0
 
@@ -15,11 +16,5 @@ speed = 300.0
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("1_le6fj")
 
-[node name="HitboxComp" parent="." instance=ExtResource("2_kh308")]
-collision_mask = 2
-damage = 1.0
-applies_knockback = true
-knockback_force = 10.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComp"]
-shape = SubResource("CircleShape2D_63fu2")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_fyrci")

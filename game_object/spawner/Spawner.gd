@@ -1,5 +1,5 @@
 extends Node2D
-class_name Spawner
+class_name RadialSpawner
 
 @export var entity : PackedScene
 @export var spawn_radius : float

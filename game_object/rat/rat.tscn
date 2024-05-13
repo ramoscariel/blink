@@ -1,0 +1,66 @@
+[gd_scene load_steps=11 format=3 uid="uid://dg187e1osycgl"]
+
+[ext_resource type="Script" path="res://game_object/rat/rat.gd" id="1_5qudb"]
+[ext_resource type="Texture2D" uid="uid://cbwoy25kh48n" path="res://game_object/rat/rat-sheet.png" id="1_6rnys"]
+[ext_resource type="PackedScene" uid="uid://vl3km8sqmduk" path="res://component/flock_agent/flock_agent.tscn" id="3_34oja"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0j7io"]
+atlas = ExtResource("1_6rnys")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e0d4a"]
+atlas = ExtResource("1_6rnys")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x5g5h"]
+atlas = ExtResource("1_6rnys")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ydl3b"]
+atlas = ExtResource("1_6rnys")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0sl6m"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0j7io")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e0d4a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x5g5h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ydl3b")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u6mhe"]
+radius = 3.16228
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n1cny"]
+radius = 7.07107
+
+[node name="Rat" type="CharacterBody2D"]
+script = ExtResource("1_5qudb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_0sl6m")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.796272
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_u6mhe")
+
+[node name="AgentCollider" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AgentCollider"]
+shape = SubResource("CircleShape2D_n1cny")
+
+[node name="FlockAgent" parent="." instance=ExtResource("3_34oja")]

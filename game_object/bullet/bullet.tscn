@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c3kd12jese3hp"]
+[gd_scene load_steps=11 format=3 uid="uid://c3kd12jese3hp"]
 
 [ext_resource type="Script" path="res://game_object/bullet/bullet.gd" id="1_yw1dt"]
 [ext_resource type="PackedScene" uid="uid://dmnae710xqkon" path="res://component/speed_comp/speed_comp.tscn" id="2_1e2ef"]
@@ -84,12 +84,18 @@ _data = {
 "decay": SubResource("Animation_nf1gy")
 }
 
-[node name="Bullet" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hfq8p"]
+size = Vector2(4, 4)
+
+[node name="Bullet" type="Area2D"]
+collision_layer = 0
+collision_mask = 64
 script = ExtResource("1_yw1dt")
 rotate_speed = 500.0
 player_dodge_bullet_sprite = ExtResource("2_ll6ah")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.556863, 0.627451, 0.384314, 1)
 texture = ExtResource("2_gobsi")
 
 [node name="SpeedComp" parent="." instance=ExtResource("2_1e2ef")]
@@ -99,13 +105,15 @@ acceleration_factor = 20.0
 [node name="HitboxComp" parent="." instance=ExtResource("4_2uecp")]
 collision_mask = 2
 damage = 1.0
-applies_knockback = true
-knockback_force = 50.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComp"]
+visible = false
 shape = SubResource("RectangleShape2D_c8k42")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_b70tu")
 }
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hfq8p")

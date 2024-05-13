@@ -1,7 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://tqq3losf3fpp"]
+[gd_scene load_steps=21 format=3 uid="uid://tqq3losf3fpp"]
 
-[ext_resource type="Script" path="res://game_object/player/player.gd" id="1_3lloq"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_fplhd"]
 [ext_resource type="Texture2D" uid="uid://ddhe5ambppd72" path="res://game_object/player/merlin_sheet.png" id="2_70og5"]
+[ext_resource type="PackedScene" uid="uid://c3kd12jese3hp" path="res://game_object/bullet/bullet.tscn" id="2_qhkki"]
+[ext_resource type="PackedScene" uid="uid://ccm0cbwi1sxek" path="res://sfx/wizard_vanish/wizard_vanish.tscn" id="3_im3hx"]
 [ext_resource type="AudioStream" uid="uid://rjnapkcckmj5" path="res://game_object/player/shoot.wav" id="3_ufk2k"]
 [ext_resource type="AudioStream" uid="uid://cfo7hmu1px83u" path="res://game_object/player/pop.wav" id="4_c2s0n"]
 [ext_resource type="PackedScene" uid="uid://pnyqhv4soflw" path="res://component/health_comp/health_comp.tscn" id="5_p3h2n"]
@@ -9,8 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://c7xgwiq4vr6et" path="res://component/knockback_comp/knockback_comp.tscn" id="7_jdv3t"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gj3gv"]
-radius = 3.0
-height = 12.0
+radius = 4.0
+height = 14.0
 
 [sub_resource type="Animation" id="Animation_otb6b"]
 length = 0.001
@@ -140,8 +142,13 @@ tracks/4/keys = {
 "values": [0.0]
 }
 
+[sub_resource type="Animation" id="Animation_y1amo"]
+resource_name = "default"
+length = 0.6
+loop_mode = 1
+
 [sub_resource type="Animation" id="Animation_8i00s"]
-resource_name = "damaged"
+resource_name = "hurt"
 length = 0.28
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -159,7 +166,7 @@ tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath("Sprite2D:rotation")
-tracks/1/interp = 4
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2),
@@ -167,11 +174,6 @@ tracks/1/keys = {
 "update": 0,
 "values": [0.0, -0.523599]
 }
-
-[sub_resource type="Animation" id="Animation_y1amo"]
-resource_name = "default"
-length = 0.6
-loop_mode = 1
 
 [sub_resource type="Animation" id="Animation_21mq3"]
 resource_name = "idle"
@@ -242,21 +244,60 @@ tracks/4/keys = {
 _data = {
 "RESET": SubResource("Animation_otb6b"),
 "attack": SubResource("Animation_rfgrl"),
-"damaged": SubResource("Animation_8i00s"),
 "default": SubResource("Animation_y1amo"),
+"hurt": SubResource("Animation_8i00s"),
 "idle": SubResource("Animation_21mq3")
+}
+
+[sub_resource type="Animation" id="Animation_7byd6"]
+resource_name = "not_inv"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_r43s6"]
+resource_name = "inv"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.8, 1.05),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.592157), Color(1, 1, 1, 1), Color(1, 1, 1, 0.592157), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hathd"]
+_data = {
+"inv": SubResource("Animation_r43s6"),
+"not_inv": SubResource("Animation_7byd6")
 }
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x5424"]
 radius = 3.0
-height = 12.0
+height = 14.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 32
-collision_mask = 16
-motion_mode = 1
-script = ExtResource("1_3lloq")
-invincibility_duration = 1.0
+collision_mask = 64
+script = ExtResource("1_fplhd")
+bullet = ExtResource("2_qhkki")
+vanish_effect = ExtResource("3_im3hx")
+shoot_wait_interval = 0.25
+teleport_duration = 0.2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_70og5")
@@ -285,10 +326,16 @@ libraries = {
 }
 autoplay = "idle"
 
+[node name="InvincibilityAnim" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hathd")
+}
+
 [node name="HealthComp" parent="." instance=ExtResource("5_p3h2n")]
 
 [node name="HurtboxComp" parent="." node_paths=PackedStringArray("health_comp", "knockback_comp") instance=ExtResource("6_qcrsb")]
 collision_layer = 8
+collision_mask = 1
 health_comp = NodePath("../HealthComp")
 knockback_comp = NodePath("../KnockbackComp")
 
@@ -298,9 +345,18 @@ shape = SubResource("CapsuleShape2D_x5424")
 [node name="KnockbackComp" parent="." node_paths=PackedStringArray("body") instance=ExtResource("7_jdv3t")]
 body = NodePath("..")
 
-[node name="ShootWaitInterval" type="Timer" parent="."]
+[node name="ShootTimer" type="Timer" parent="."]
 wait_time = 0.25
+one_shot = true
 
-[node name="TimeInAtkAnim" type="Timer" parent="."]
-wait_time = 0.5
+[node name="MinTimeInAtkAnim" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[node name="LastBreathTimer" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[node name="InvincibilityTimer" type="Timer" parent="."]
+wait_time = 2.0
 one_shot = true

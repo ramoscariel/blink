@@ -21,12 +21,13 @@ radius = 7.0
 
 [node name="Knight" type="CharacterBody2D"]
 collision_layer = 16
-collision_mask = 48
+collision_mask = 80
 motion_mode = 1
 script = ExtResource("1_sw80d")
 speed_reset = 25.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_22lbw")
 
@@ -36,7 +37,7 @@ target_speed = 55.0
 acceleration_factor = 10.0
 
 [node name="HealthComp" parent="." instance=ExtResource("13_6pjs4")]
-max_health = 2
+max_health = 2.0
 
 [node name="HurtboxComp" parent="." node_paths=PackedStringArray("health_comp", "knockback_comp") instance=ExtResource("14_atfw3")]
 visible = false
@@ -52,7 +53,6 @@ shape = SubResource("CapsuleShape2D_8tjfg")
 body = NodePath("..")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.576471)
 texture = ExtResource("7_l7p0h")
 
 [node name="SwordSprite" type="Sprite2D" parent="Sprite2D"]
@@ -63,14 +63,12 @@ centered = false
 offset = Vector2(3.87, -10.295)
 
 [node name="HitboxComp" parent="." instance=ExtResource("8_b8ch1")]
-visible = false
 position = Vector2(0, -1)
 collision_mask = 8
 damage = 1.0
-applies_knockback = true
-knockback_force = 50.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComp"]
+visible = false
 position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_dbvmw")
 

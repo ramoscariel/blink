@@ -1,4 +1,4 @@
-extends Node2D
+extends Area2D
 class_name Bullet
 
 @export var rotate_speed : float
@@ -12,6 +12,7 @@ var emiiter_pos : Vector2
 var is_dodge_bullet : bool = false
 
 func _ready():
+	body_entered.connect(on_body_entered)
 	sprite = $Sprite2D
 	speed_comp = get_node("SpeedComp")
 	anim_player = get_node("AnimationPlayer") as AnimationPlayer
@@ -27,7 +28,6 @@ func _physics_process(delta):
 	position +=dir.normalized()*speed_comp.current_speed
 	
 func _process(delta):
-	print(rotation_degrees)
 	rotation_degrees += rotate_speed*delta
 	if abs(speed_comp.current_speed) > 0:
 		pass
@@ -41,4 +41,5 @@ func become_dodge_bullet():
 	hitbox_comp.monitoring = false
 	sprite.texture = player_dodge_bullet_sprite
 	
-	
+func on_body_entered(_body : Node2D):
+	destroy()

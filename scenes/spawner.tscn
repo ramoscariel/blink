@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://g5hdqsa74ba"]
+
+[ext_resource type="Script" path="res://scripts/spawner.gd" id="1_6rule"]
+[ext_resource type="PackedScene" uid="uid://cuxj1181v8f7g" path="res://game_object/knight/knight.tscn" id="2_0job8"]
+
+[node name="Spawner" type="Node2D"]
+script = ExtResource("1_6rule")
+time_to_spawn = 8.0
+entities = Array[PackedScene]([ExtResource("2_0job8")])
+
+[node name="SpawnEntityTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

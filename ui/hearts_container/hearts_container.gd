@@ -4,9 +4,9 @@ class_name HeartsContainer
 var grid_container : GridContainer
 var heart_scene : PackedScene
 
-func _ready():
-	grid_container = $MarginContainer/GridContainer
+func _enter_tree():
 	heart_scene = preload("res://ui/heart/heart.tscn")
+	grid_container = $MarginContainer/GridContainer
 
 func add_heart():
 	var heart_instance = heart_scene.instantiate() as Heart

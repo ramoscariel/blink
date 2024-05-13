@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c553137dinp3k"]
+
+[ext_resource type="Script" path="res://scripts/p_cam_aid.gd" id="1_0slhl"]
+
+[node name="PCamAid" type="Node2D"]
+script = ExtResource("1_0slhl")
