@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://0ch87bw1ryfo"]
+[gd_scene load_steps=17 format=3 uid="uid://0ch87bw1ryfo"]
 
 [ext_resource type="PackedScene" uid="uid://tqq3losf3fpp" path="res://scenes/player.tscn" id="1_5opj7"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="1_m55ro"]
@@ -10,6 +10,9 @@
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="7_up8fe"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="8_u3ya3"]
 [ext_resource type="PackedScene" uid="uid://g5hdqsa74ba" path="res://scenes/spawner.tscn" id="9_cjq42"]
+[ext_resource type="AudioStream" uid="uid://uvec0gsivjt" path="res://sounds/main_song_intro.wav" id="11_ptgx3"]
+[ext_resource type="PackedScene" uid="uid://hc75u5kmin4a" path="res://managers/song_manager/song_manager.tscn" id="12_3dcu1"]
+[ext_resource type="PackedScene" uid="uid://bmvsm7re3ey1" path="res://managers/camera_shake_manager/camera_shake_manager.tscn" id="13_14ac3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_53r0y"]
 texture = ExtResource("1_qkw81")
@@ -557,13 +560,13 @@ motion_mode = 1
 [node name="PCamAid" parent="." instance=ExtResource("2_tf0w4")]
 position = Vector2(434, 266)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." groups=["camera"]]
 position = Vector2(434, 266)
 zoom = Vector2(1.8, 1.8)
-limit_left = -96
-limit_top = -32
-limit_right = 910
-limit_bottom = 560
+limit_left = -112
+limit_top = -48
+limit_right = 928
+limit_bottom = 576
 editor_draw_limits = true
 
 [node name="PhantomCameraHost" type="Node" parent="Camera2D"]
@@ -575,15 +578,13 @@ script = ExtResource("7_up8fe")
 follow_mode = 2
 follow_target = NodePath("../PCamAid")
 zoom = Vector2(1.8, 1.8)
+snap_to_pixel = true
 tween_resource = SubResource("Resource_5lo8b")
 inactive_update_mode = 1
 follow_damping = true
 follow_damping_value = Vector2(0.25, 0.25)
 draw_limits = true
-limit_left = -96
-limit_top = -32
-limit_right = 910
-limit_bottom = 560
+limit_target = NodePath("../TileMap")
 
 [node name="HealthManager" parent="." node_paths=PackedStringArray("hearts_container") instance=ExtResource("4_nmbhm")]
 hearts_container = NodePath("../CanvasLayer/HeartsContainer")
@@ -614,3 +615,11 @@ position = Vector2(556, 30)
 
 [node name="Knight" parent="." instance=ExtResource("3_1curx")]
 position = Vector2(499, 340)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." groups=["song_player"]]
+stream = ExtResource("11_ptgx3")
+
+[node name="SongManager" parent="." instance=ExtResource("12_3dcu1")]
+
+[node name="CameraShakeManager" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("13_14ac3")]
+camera = NodePath("../Camera2D")

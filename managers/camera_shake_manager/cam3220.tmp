@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmvsm7re3ey1"]
+
+[ext_resource type="Script" path="res://managers/camera_shake_manager/camera_shake_manager.gd" id="1_ovjqe"]
+
+[node name="CameraShakeManager" type="Node"]
+script = ExtResource("1_ovjqe")

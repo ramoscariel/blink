@@ -16,6 +16,7 @@ func on_area_entered(area : Area2D):
 func check_hurtbox(area : Area2D):
 	var hurtbox = area as HurtboxComp
 	if hurtbox.invincibility:
+		print("is invincible")
 		return
 	hurtbox.deal_damage(damage)
 	has_hit.emit()

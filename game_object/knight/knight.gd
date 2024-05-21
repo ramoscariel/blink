@@ -7,12 +7,15 @@ var sprite : Sprite2D
 var knockback_comp : KnockbackComp
 var health_comp : HealthComp
 var hitbox_comp : HitboxComp
+var hurtbox : HurtboxComp
 var speed_comp : SpeedComp
 var player : Player
 var dir : Vector2
 var stopped : bool = false
 
 func _ready():
+	hurtbox = $HurtboxComp as HurtboxComp
+	hurtbox.has_been_hit.connect(on_has_been_hit)
 	stop_timer = $StopTimer as Timer
 	stop_timer.timeout.connect(on_stop_timer_timeout)
 	hitbox_comp = get_node("HitboxComp") as HitboxComp
@@ -70,4 +73,7 @@ func on_stop_timer_timeout():
 	stopped = false
 
 func on_knockback_finished():
+	pass
+
+func on_has_been_hit():
 	pass

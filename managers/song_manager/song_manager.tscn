@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://hc75u5kmin4a"]
+
+[ext_resource type="Script" path="res://managers/song_manager/song_manager.gd" id="1_0l6sw"]
+[ext_resource type="AudioStream" uid="uid://uvec0gsivjt" path="res://sounds/main_song_intro.wav" id="2_ermti"]
+[ext_resource type="AudioStream" uid="uid://c8k0lprk0t03v" path="res://sounds/main_song_looping.wav" id="3_4xauu"]
+
+[node name="SongManager" type="Node"]
+script = ExtResource("1_0l6sw")
+intro = ExtResource("2_ermti")
+looping = ExtResource("3_4xauu")

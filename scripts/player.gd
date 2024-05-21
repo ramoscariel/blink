@@ -10,6 +10,7 @@ const TELEPORT_VEL_PERCENT := 0.9
 
 var bullet_origin : Node2D
 var sprite : Sprite2D
+var hurt_audio_player : AudioStreamPlayer2D
 var shoot_audio_player : AudioStreamPlayer2D
 var pop_audio_player : AudioStreamPlayer2D
 var anim_player : AnimationPlayer
@@ -31,12 +32,14 @@ var is_teleporting : bool = true
 var dodge_bullet_active : bool = false
 
 signal teleported
+signal player_hurt
 
 func _enter_tree():
 	bullet_origin = $BulletOrigin
 	sprite = $Sprite2D
 	shoot_audio_player = $ShootAudioPlayer
 	pop_audio_player = $PopAudioPlayer
+	hurt_audio_player = $HurtAudioPlayer
 	
 	invincibility_anim = $InvincibilityAnim
 	
@@ -151,11 +154,13 @@ func on_min_time_in_atk_anim_timeout():
 	anim_player.play("idle")
 
 func on_has_been_hit():
+	player_hurt.emit()
 	anim_player.play("hurt")
-	hurtbox.call_deferred("set_invincibility",true)
+	hurt_audio_player.play()
+	hurtbox.set_invincibility(true)
 	invincibility_timer.start()
 	invincibility_anim.play("inv")
-	print("inv_started")
+	FreezeFrameManager.freeze_frame(0.4)
 
 func on_animation_finished(anim_name : StringName):
 	if anim_name == "hurt":
@@ -168,7 +173,7 @@ func on_last_breath_timer_timeout():
 	queue_free()
 
 func on_invincibility_timer_timeout():
-	hurtbox.call_deferred("set_invincibility",false)
+	hurtbox.set_invincibility(false)
 	invincibility_anim.play("not_inv")
 	print("inv_finished")
 	

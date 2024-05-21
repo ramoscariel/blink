@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://tqq3losf3fpp"]
+[gd_scene load_steps=22 format=3 uid="uid://tqq3losf3fpp"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_fplhd"]
 [ext_resource type="Texture2D" uid="uid://ddhe5ambppd72" path="res://game_object/player/merlin_sheet.png" id="2_70og5"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://cfo7hmu1px83u" path="res://game_object/player/pop.wav" id="4_c2s0n"]
 [ext_resource type="PackedScene" uid="uid://pnyqhv4soflw" path="res://component/health_comp/health_comp.tscn" id="5_p3h2n"]
 [ext_resource type="PackedScene" uid="uid://befftq1mtpri5" path="res://component/hurtbox_comp/hurtbox_comp.tscn" id="6_qcrsb"]
+[ext_resource type="AudioStream" uid="uid://dww0b8qqavus1" path="res://game_object/player/hit.ogg" id="7_8njeo"]
 [ext_resource type="PackedScene" uid="uid://c7xgwiq4vr6et" path="res://component/knockback_comp/knockback_comp.tscn" id="7_jdv3t"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gj3gv"]
@@ -249,21 +250,6 @@ _data = {
 "idle": SubResource("Animation_21mq3")
 }
 
-[sub_resource type="Animation" id="Animation_7byd6"]
-resource_name = "not_inv"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
 [sub_resource type="Animation" id="Animation_r43s6"]
 resource_name = "inv"
 loop_mode = 1
@@ -278,6 +264,21 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.592157), Color(1, 1, 1, 1), Color(1, 1, 1, 0.592157), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_7byd6"]
+resource_name = "not_inv"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hathd"]
@@ -304,6 +305,7 @@ texture = ExtResource("2_70og5")
 hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_gj3gv")
 
@@ -320,6 +322,9 @@ stream = ExtResource("4_c2s0n")
 volume_db = -5.0
 max_polyphony = 2
 
+[node name="HurtAudioPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_8njeo")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_8i2t0")
@@ -334,6 +339,7 @@ libraries = {
 [node name="HealthComp" parent="." instance=ExtResource("5_p3h2n")]
 
 [node name="HurtboxComp" parent="." node_paths=PackedStringArray("health_comp", "knockback_comp") instance=ExtResource("6_qcrsb")]
+visible = false
 collision_layer = 8
 collision_mask = 1
 health_comp = NodePath("../HealthComp")
@@ -358,5 +364,4 @@ wait_time = 0.4
 one_shot = true
 
 [node name="InvincibilityTimer" type="Timer" parent="."]
-wait_time = 2.0
 one_shot = true
