@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpf7hhyy1kf3o"]
+
+[ext_resource type="Script" path="res://scripts/pickable_collector.gd" id="1_apt1o"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5sdqj"]
+radius = 6.08276
+
+[node name="PickableCollector" type="Area2D"]
+collision_layer = 0
+collision_mask = 128
+script = ExtResource("1_apt1o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_5sdqj")

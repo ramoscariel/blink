@@ -83,6 +83,7 @@ dodge={
 2d_physics/layer_5="collider_enemy"
 2d_physics/layer_6="collider_player"
 2d_physics/layer_7="environment"
+2d_physics/layer_8="pickables"
 
 [rendering]
 

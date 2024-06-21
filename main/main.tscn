@@ -1,18 +1,21 @@
-[gd_scene load_steps=17 format=3 uid="uid://0ch87bw1ryfo"]
+[gd_scene load_steps=20 format=3 uid="uid://0ch87bw1ryfo"]
 
 [ext_resource type="PackedScene" uid="uid://tqq3losf3fpp" path="res://scenes/player.tscn" id="1_5opj7"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="1_m55ro"]
 [ext_resource type="Texture2D" uid="uid://dcggitdtmls7c" path="res://tilemap/tilemap_packed.png" id="1_qkw81"]
 [ext_resource type="PackedScene" uid="uid://c553137dinp3k" path="res://scenes/p_cam_aid.tscn" id="2_tf0w4"]
 [ext_resource type="PackedScene" uid="uid://cuxj1181v8f7g" path="res://game_object/knight/knight.tscn" id="3_1curx"]
+[ext_resource type="PackedScene" uid="uid://cpf7hhyy1kf3o" path="res://game_object/pickable_collector/pickable_collector.tscn" id="3_l4ycq"]
 [ext_resource type="PackedScene" uid="uid://cuenttrqn18eq" path="res://managers/health_manager/health_manager.tscn" id="4_nmbhm"]
 [ext_resource type="PackedScene" uid="uid://cajs6u2jp78rx" path="res://ui/hearts_container/hearts_container.tscn" id="5_rm0ma"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="7_up8fe"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="8_u3ya3"]
 [ext_resource type="PackedScene" uid="uid://g5hdqsa74ba" path="res://scenes/spawner.tscn" id="9_cjq42"]
+[ext_resource type="PackedScene" uid="uid://dptxfoyigge1j" path="res://ui/xp_bar/xp_bar.tscn" id="9_sl64o"]
 [ext_resource type="AudioStream" uid="uid://uvec0gsivjt" path="res://sounds/main_song_intro.wav" id="11_ptgx3"]
 [ext_resource type="PackedScene" uid="uid://hc75u5kmin4a" path="res://managers/song_manager/song_manager.tscn" id="12_3dcu1"]
 [ext_resource type="PackedScene" uid="uid://bmvsm7re3ey1" path="res://managers/camera_shake_manager/camera_shake_manager.tscn" id="13_14ac3"]
+[ext_resource type="PackedScene" uid="uid://bo1ewdrbatec7" path="res://managers/level_up_manager/level_up_manager.tscn" id="16_wehdd"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_53r0y"]
 texture = ExtResource("1_qkw81")
@@ -557,6 +560,8 @@ layer_1/tile_data = PackedInt32Array(720913, 262144, 0, 720914, 131072, 2, 72091
 position = Vector2(434, 266)
 motion_mode = 1
 
+[node name="PickableCollector" parent="Player" instance=ExtResource("3_l4ycq")]
+
 [node name="PCamAid" parent="." instance=ExtResource("2_tf0w4")]
 position = Vector2(434, 266)
 
@@ -593,6 +598,8 @@ hearts_container = NodePath("../CanvasLayer/HeartsContainer")
 
 [node name="HeartsContainer" parent="CanvasLayer" instance=ExtResource("5_rm0ma")]
 
+[node name="XpBar" parent="CanvasLayer" instance=ExtResource("9_sl64o")]
+
 [node name="SpawnerContainer" type="Node2D" parent="."]
 
 [node name="Spawner" parent="SpawnerContainer" instance=ExtResource("9_cjq42")]
@@ -617,9 +624,15 @@ position = Vector2(556, 30)
 position = Vector2(499, 340)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." groups=["song_player"]]
+process_mode = 3
 stream = ExtResource("11_ptgx3")
 
 [node name="SongManager" parent="." instance=ExtResource("12_3dcu1")]
 
 [node name="CameraShakeManager" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("13_14ac3")]
 camera = NodePath("../Camera2D")
+
+[node name="LevelUpManager" parent="." node_paths=PackedStringArray("xp_bar", "pickable_collector", "canvas_layer") instance=ExtResource("16_wehdd")]
+xp_bar = NodePath("../CanvasLayer/XpBar")
+pickable_collector = NodePath("../Player/PickableCollector")
+canvas_layer = NodePath("../CanvasLayer")

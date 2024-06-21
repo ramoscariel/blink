@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsrxmn6xt2qbs"]
+
+[ext_resource type="Texture2D" uid="uid://d3dmu6yktok27" path="res://game_object/xp/big_xp.png" id="1_ec6y3"]
+[ext_resource type="Script" path="res://game_object/xp/xp.gd" id="1_i74qg"]
+[ext_resource type="Texture2D" uid="uid://txggkv78wj6u" path="res://game_object/xp/little_xp.png" id="2_23wyj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xp32p"]
+radius = 6.0
+
+[node name="Xp" type="Area2D"]
+collision_layer = 128
+collision_mask = 0
+script = ExtResource("1_i74qg")
+little_xp_sprite = ExtResource("2_23wyj")
+big_xp_sprite = ExtResource("1_ec6y3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xp32p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8elfetvd3qbo"]
+
+[ext_resource type="Script" path="res://ui/level_up_menu/level_up_menu.gd" id="1_gq815"]
+
+[node name="LevelUpMenu" type="MarginContainer"]
+process_mode = 3
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_bottom = 50
+script = ExtResource("1_gq815")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+color = Color(0.498039, 0.498039, 0.466667, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "Level up!"
+
+[node name="Button" type="Button" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Nice!"

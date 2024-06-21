@@ -2,23 +2,23 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bloouh2jtndx1"
-path="res://.godot/imported/sign_prompt.png-18d451127e1cd1a16367acd23cec47e5.ctex"
+uid="uid://txggkv78wj6u"
+path="res://.godot/imported/little_xp.png-762dc9d2bf3193ab0d595bfb360de5e8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/phantom_camera/examples/textures/2D/sign_prompt.png"
-dest_files=["res://.godot/imported/sign_prompt.png-18d451127e1cd1a16367acd23cec47e5.ctex"]
+source_file="res://game_object/xp/little_xp.png"
+dest_files=["res://.godot/imported/little_xp.png-762dc9d2bf3193ab0d595bfb360de5e8.ctex"]
 
 [params]
 
 compress/mode=0
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false

@@ -12,6 +12,7 @@ var speed_comp : SpeedComp
 var player : Player
 var dir : Vector2
 var stopped : bool = false
+var xp : PackedScene = preload("res://game_object/xp/xp.tscn")
 
 func _ready():
 	hurtbox = $HurtboxComp as HurtboxComp
@@ -62,7 +63,13 @@ func on_teleported():
 	speed_comp.current_speed = speed_reset
 
 func destroy():
+	call_deferred("spawn_xp")
 	queue_free()
+
+func spawn_xp():
+	var xp_instance = xp.instantiate() as Node2D
+	get_parent().add_child(xp_instance)
+	xp_instance.global_position = global_position
 
 func on_has_hit():
 	print("has hit")
